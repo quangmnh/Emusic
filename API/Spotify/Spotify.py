@@ -36,6 +36,7 @@ import requests
 import ast
 import json
 import urllib.parse
+import winreg
 class Spotify:
     def __init__(self, _VERBOSE = False):
         self._session = requests.session()
@@ -46,6 +47,20 @@ class Spotify:
         self.verbose = _VERBOSE
         self.market = "VN"
         self.default_type = ["album" , "artist", "playlist", "track", "show", "episode"]
+        self.install_path ="D:/BT/211/Thesis/GitRepos/Emusic/API/Spotify/"
+        
+
+    def url_protocol_handler_register(self):
+        key = winreg.CreateKey(winreg.HKEY_CLASSES_ROOT, "emusic")
+        # winreg.SetValueEx(key,__value='@="Spotify API call back""URL Protocol"=""')
+        winreg.SetValueEx(key,'', 1,winreg.REG_SZ,"Emusic App")
+        winreg.SetValueEx(key,'URL Protocol', 1, winreg.REG_SZ, "")
+        shell = winreg.CreateKey(key, "shell")
+        open = winreg.CreateKey(shell, "open")
+        command = winreg.CreateKey(open, "command")
+        winreg.SetValueEx(command, '', 0, winreg.REG_MULTI_SZ, ["python "+self.install_path+"tesst.py","%1"])
+        
+
 
     def _make_authorization_headers(self, client_id, client_secret):
         """
