@@ -28,6 +28,7 @@ Python script for Spotify API
 
 
 import base64
+import re
 from typing import List
 from requests.models import requote_uri
 import six
@@ -43,7 +44,7 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import time
 import hashlib
-
+from ftfy import fix_encoding,guess_bytes,fix_text
 class Spotify:
     def __init__(self, _VERBOSE = False):
         self._session = requests.session()
@@ -385,9 +386,9 @@ class Spotify:
             print("     Status code: " + str(response.status_code))
         if response.status_code == 200:
             try:
-                tracks = response.content.decode("ascii")   
+                tracks = response.content.decode("utf-8")   
             except:
-                tracks = response.content.decode("utf-8")
+                tracks = response.content.decode("ascii")
             if self.verbose:
                 print("     Track information: " + tracks)
             return json.loads(tracks)
@@ -488,7 +489,7 @@ class Spotify:
         url = self.api_url + "audio-features?ids=" + str(track_ids[0])
         for i in range (1,len(track_ids)):
             url += "%2C" + str(track_ids[i])
-        print(url)
+        # print(url)
         response = self._session.get(url = url, headers=header)
         if self.verbose:
             print("     Status code: " + str(response.status_code))
@@ -568,7 +569,17 @@ class Spotify:
         if self.verbose:
             print("     Status code: " + str(response.status_code))
         if response.status_code == 200:
-            res = response.content.decode("ascii",errors="ignore")   
+            # print(guess_bytes(response.content)[1])
+            try:
+                res = response.content.decode("utf-8")   
+            except:
+                try:
+                    res = response.content.decode("ascii")
+                except:
+                    try: 
+                        res = response.content.decode("utf-32")
+                    except:
+                        res = response.content.decode("utf-16")
             if self.verbose:
                 print("     Search results: " + res)
             return json.loads(res)
