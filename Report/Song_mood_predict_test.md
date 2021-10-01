@@ -92,6 +92,22 @@ print("Baseline: %.2f%% (%.2f%%)" % (results.mean()*100,results.std()*100))
 estimator.fit(X_train,Y_train)
 y_preds = estimator.predict(X_test)
 ```
+Note to take:
+
+In machine learning, normalization/standardization involves feature scaling, where the features (variables) used for making predictions are scaled to the same range of values. The feature scaling process is applied in the data preprocessing step before applying any machine learning algorithm.
+
+**How do we standardize the data during real-time prediction making?**
+
+Updating the mean and the standard deviation vectors with novel data every time when generating predictions in a real-time setting with a deployed model can be quite unwieldly. What happens if the predictions have to be made in **real-time** and we have a **large amount of historical data**? In this case, loading all the historical data previously used for training is a very time consuming process. Another problem is the memory overhead associated with loading such a large amount of data, which requires spending more money for builiding a suitible setup that allows scaling up of the resources.
+
+Therefore, to allow the predictive tool to run in **real-time** and to be **cost efficient**, only the new data available for scoring should be loaded each time. Besides being often unfeasible and expensive, the online update of the mean and the standard deviation is unnecessary if the model is updated and retrained frequently enough. In that case, it is safe to assume that the distribution of the total accumulated data does not vary substantially with the addition of novel data, and the update of the mean and standard deviation vectors can be limited to the times when the model itself is updated and retrained. Therefore, when using the deployed model to generate predictions during its operational lifetime, the previously stored mean and standard deviation of the historical (training) data are used to standardize the test data as well. During its operational lifetime, the model can be periodically retrained after encountering sufficient novel data and the normalization vectors can be updated based on the joint historical and novel data.
+
+![Untitled](https://www.element61.be/sites/default/files/pictures/predictive%20pipeline_0.png)
+
+⇒ So large data set → Time consuming on prediction since it needed to retrained at some cases.
+
+⇒ Considering choosing some features without scaling, or reduce the training dataset would be sufficent, imo.
+
 
 That's it for today. The report will be updated soon with more info (hopefully) and some conclusion on what have been done!
 
@@ -100,3 +116,7 @@ Note:
 - Tried to train the dataset Minh gives (without the `time_signature` and `mode` features), the accuracy yields only for 50%, maybe it needs improvement
 - Learned about epochs, batch size during the model test
 - Will look into it more
+
+---
+## Revision
+Oct 1st: Initial commit, added the note on scaled data training.
