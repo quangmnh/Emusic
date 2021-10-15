@@ -8,3 +8,9 @@ http://marsyas.info/downloads/datasets.html
 
 ### Sample model
 https://github.com/SeungHeonDoh/Music_Emotion_Recognition
+
+
+
+
+#### Changelog
+[Oct 15th] Initial create
