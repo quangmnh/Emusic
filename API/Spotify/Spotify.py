@@ -20,9 +20,9 @@ Python script for Spotify API
         2021, Sep 28th: Added user authorization flow
 ------------------------------------------------------------------
     TO DO:
-            Build a server for App hosting cause the API need to 
-        be redirected somehow
-            Deal with the unicode character in the query result
+        Update the unnecssary methods.
+        Add mel-spectrogram extract from 30s preview and reconstruct
+        full length spectrogram using analysis
 ==================================================================
 """
 
