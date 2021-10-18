@@ -45,6 +45,14 @@ from urllib.parse import parse_qs
 import time
 import hashlib
 from ftfy import fix_encoding,guess_bytes,fix_text
+import io
+import pydub
+import librosa
+import os
+import numpy as np
+from matplotlib import pyplot as plt
+import librosa.display
+
 class Spotify:
     def __init__(self, _VERBOSE = False):
         self._session = requests.session()
@@ -423,7 +431,10 @@ class Spotify:
         if self.verbose:
             print("     Status code: " + str(response.status_code))
         if response.status_code == 200:
-            track = response.content.decode("ascii")   
+            try:
+                track = response.content.decode("utf-8")   
+            except:
+                track = response.content.decode("ascii")
             if self.verbose:
                 print("     Tracks information: " + track)
             return json.loads(track)
@@ -594,3 +605,45 @@ class Spotify:
             print("     Error in searching:")
             print(response)
             return 1
+    def download_to_wav(self, preview_url:str, save_link:str, id: str):
+        """
+        utility function to download mp3 from preview url provided by Spotify and convert to a 
+        wav file, which is easily readable by librosa, that is saved to the link in the device
+
+        :param preview_url: got from get_track with key 'preview_url'
+        :param save_link: Where to saved the file, ie 'D:/BT/211/Thesis/SongPreview/'. Remember the slash at the end
+        """
+        response = requests.get(preview_url, allow_redirects=True)
+        s = io.BytesIO(response.content)
+        pydub.AudioSegment.from_file(s).export(save_link + id +'.wav', format='wav')
+    def get_mel_spectrogram(self,track_id:str, link:str, msg_link: str,trimmed:int, n_fft:int, hop_length:int, n_mels:int):
+        """
+        Function to generate mel-spectrogram from a list of track_id, the wav file should be already downloaded 
+        and converted from mp3
+ 
+        :param track_id: just track id str, for naming,since u're expected to already downloaded the wav file
+
+        :param link: link to where u store the wav file, ie 'D:/BT/211/Thesis/SongPreview/'. Remember the slash at the end
+
+        :param msg_link: link to where u store the mel file, ie 'D:/BT/211/Thesis/SongPreview/'. Remember the slash at the end
+
+        :param trimmed: prune whatever below this number of decibels
+
+        :param n_fft: window length, specify the number of sample, stft matrix have 1+n_fft/2 rows, should be power of two,
+        2048 mean appx 93 millisecs, which is 1/22050*2048, sampling rate deffault to 22050. for voice processing,
+        n_fft should be 512 
+
+        :param hop_length: deffault to n_fft//4, specify the number of audio sample between stft matrix columns
+
+        :param n_mels: number of mel filter banks, 10 is a good example value, albeit relatively small 
+        """
+        wav_file = link+track_id+'.wav'
+        if os.path.exists(wav_file):
+            y, sr = librosa.load(wav_file) #load wav file, y is 
+            track, _ = librosa.effects.trim(y,top_db=trimmed) # trim the silent edge, prune everything under 10 decibels
+            S = librosa.feature.melspectrogram(track, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels)
+            S_DB = librosa.power_to_db(S, ref=np.max)
+            librosa.display.specshow(S_DB, sr=sr, hop_length=hop_length)
+            plt.savefig(msg_link + track_id+'.png', format ='png', bbox_inches = 'tight', pad_inches=0)
+        else:
+            return 'no file'
