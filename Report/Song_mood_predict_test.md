@@ -109,14 +109,25 @@ Therefore, to allow the predictive tool to run in **real-time** and to be **c
 ⇒ Considering choosing some features without scaling, or reduce the training dataset would be sufficent, imo.
 
 
-That's it for today. The report will be updated soon with more info (hopefully) and some conclusion on what have been done!
 
 Note:
 
 - Tried to train the dataset Minh gives (without the `time_signature` and `mode` features), the accuracy yields only for 50%, maybe it needs improvement
 - Learned about epochs, batch size during the model test
 - Will look into it more
+- Decided to use another features
+- Dataset train still have duplicate data (same id on different labels) → A drawback
+- Model complexity → A drawback
+
+### Conclusion:
+- The labels chosen are not good enough (only have 4 moods)
+- Some data overlapped each other (Dataset used are not suitable, and the way of thinking used kinda naive -> basing on the search result for the mood of the song, some songs can have multiple moods (multiple playlist)
+- The model built are not good (simple architecture, and the lack of knowledge of the implementer (me))
+- Decided to learn more and use another features (MFCCs in this case, the knowledge involved will be presented later)
+- Maybe reconsider using this set of features later when having time (but first gonna find (or generate) a proper dataset for this)
+- Thus, this model now will be on hiatus.
 
 ---
 ## Revision
-Oct 1st: Initial commit, added the note on scaled data training.
+- Oct 1st: Initial commit, added the note on scaled data training.
+- Nov 5th: Added the hiatus status on this implementation, adding conclusion
