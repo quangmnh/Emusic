@@ -1,0 +1,1 @@
+This folder contains the implementation on the Music genre detection, following the guide on [Deep learning for Audio with Python](https://www.youtube.com/playlist?list=PL-wATfeyAMNrtbkCNsLcpoAyBBRJZVlnf) series
