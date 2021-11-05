@@ -933,6 +933,7 @@ Epoch 30/30
 - Build a music emotion recognition model based on the input generated
 - Tweaking the performance
 - Write some reports on it
+- Convert this report to pdf format also
 
 ## References
 
