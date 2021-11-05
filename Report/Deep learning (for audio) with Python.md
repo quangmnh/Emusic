@@ -548,7 +548,7 @@ $h_t$ in this case will be used as hidden state layer for the next time step and
 
 All of the three model are running and compiling on the same section, meaning using the `train_test_split` test set and validation set are the same for 3 implementations
 
-Validation set's size is 0.25 of the training set's size and test set's size is 0.2 of the remaining training test size (0.75 of the original size).
+Test set's size is 0.25 of the training set's size and validation set's size is 0.2 of the remaining training test size (0.75 of the original size).
 
 All of the models having the same output shape, same number of epochs (30) and batch size (32)
 
