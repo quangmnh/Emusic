@@ -51,7 +51,7 @@ Use case description:
 
 | Use case ID: | EMS_UC_3 |
 | --- | --- |
-| Use case name: | Create Emotion-based playlits |
+| Use case name: | Create Emotion-based playlist |
 | Description | Use case dùng để giúp user tạo các playlist tương ứng với các cảm xúc của user (ví dụ playlist nghe khi buồn, playlist nghe khi vui, etc.) bằng việc lấy thông tin về các từ khoá liên quan đến các track mà user muốn nghe.  |
 | Primary actor | User |
 | Secondary actor | Spotify |
@@ -77,7 +77,7 @@ Use case description:
 
 | Use case ID: | EMS_UC_4 |
 | --- | --- |
-| Use case name: | Select Emotion-based playlits |
+| Use case name: | Select Emotion-based playlist |
 | Description | Use case dùng để giúp user chọn playlist tương ứng với các cảm xúc hiện tại của user (ví dụ nghe playlist buồn với cảm xúc hiện tại là buồn, etc.) bằng việc nhận diện cảm xúc khuôn mặt hiện tại của User thông qua FERModel |
 | Primary actor | User |
 | Secondary actor | FERModel |
